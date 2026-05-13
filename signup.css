@@ -4,7 +4,7 @@ body {
     background-color: #E5E5E5;
 }
 
-/* NAVBAR (match login exactly) */
+/* NAVBAR */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -37,7 +37,7 @@ body {
     padding: 40px 0;
 }
 
-/* SIGNUP BOX (match login width exactly) */
+/* SIGNUP BOX */
 .signup-box {
     background-color: #000000;
     padding: 35px;
@@ -55,14 +55,14 @@ body {
 /* ROW FIX (IMPORTANT FIX) */
 .form-row {
     display: flex;
-    gap: 15px; /* reduced from 25px → cleaner */
+    gap: 15px; 
     margin-bottom: 10px;
 }
 
 /* REMOVE BAD SPACING */
 .input-group {
     flex: 1;
-    margin-top: 0; /* FIXED: was causing misalignment */
+    margin-top: 0; 
 }
 
 /* LABELS */

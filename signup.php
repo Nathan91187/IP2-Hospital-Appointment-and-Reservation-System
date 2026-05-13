@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <h2>XYZ Hospital</h2>
 
-        <!-- 🔥 SUCCESS / ERROR UI -->
+        <!--  SUCCESS / ERROR UI -->
         <?php if ($error != ""): ?>
             <div class="error-box"><?= $error ?></div>
         <?php endif; ?>

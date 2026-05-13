@@ -4,7 +4,7 @@ body {
     background-color: #E5E5E5;
 }
 
-/* NAVBAR (same style for both pages) */
+/* NAVBAR  */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -37,7 +37,7 @@ body {
     height: 85vh;
 }
 
-/* LOGIN BOX (same sizing logic as signup) */
+/* LOGIN BOX  */
 .login-box {
     background-color: #000000;
     padding: 35px;
@@ -60,7 +60,7 @@ label {
     font-size: 14px;
 }
 
-/* INPUTS (shared feel) */
+/* INPUTS  */
 input {
     width: 100%;
     padding: 10px;
