@@ -1,0 +1,163 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #E5E5E5;
+}
+
+/* TOP BLACK HEADER */
+.top-header {
+    background-color: #1E1E1E;
+    color: white;
+    padding: 15px 25px;
+    font-size: 18px;
+}
+
+/* MAIN WHITE CONTAINER */
+.main-container {
+    width: 92%;
+    margin: 20px auto;
+    background-color: white;
+    min-height: 90vh;
+    padding: 35px;
+    box-sizing: border-box;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h2 {
+    margin: 0;
+    font-size: 42px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    margin-left: 35px;
+    font-size: 28px;
+    transition: 0.2s;
+}
+
+.nav-links a:hover {
+    color: #FCA311;
+}
+
+/* CARDS */
+.cards {
+    display: flex;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.card {
+    background-color: black;
+    color: white;
+    width: 280px;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.card p {
+    margin-top: 10px;
+    color: #FCA311;
+    font-size: 38px;
+    font-weight: bold;
+}
+
+/* DOCTOR SECTION */
+.doctor-section {
+    margin-top: 60px;
+}
+
+.doctor-section h1 {
+    font-size: 42px;
+    margin-bottom: 25px;
+}
+
+/* FORM BOX */
+.doctor-box {
+    width: 650px;
+    background-color: #F7F7F7;
+    padding: 30px;
+}
+
+/* FORM ROW */
+.form-row {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 25px;
+}
+
+/* INPUT GROUP */
+.input-group {
+    flex: 1;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #E5E5E5;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* BUTTON */
+button {
+    background-color: #FCA311;
+    border: none;
+    color: white;
+    padding: 14px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.error-box {
+    background-color: #ffdddd;
+    color: #a10000;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-left: 5px solid red;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 650px;
+}
+
+.success-box {
+    background-color: #ddffdd;
+    color: #0a6b0a;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-left: 5px solid green;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 650px;
+}
+
+.invisible {
+    visibility: hidden;
+}
