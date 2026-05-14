@@ -1,5 +1,5 @@
 <?php
-include "db.php";
+include "../../Database/db.php";
 
 $error = "";
 $success = "";
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Admin</title>
-    <link rel="stylesheet" href="admin_dashboard.css">
+    <link rel="stylesheet" href="../CSS/admin_dashboard.css">
 </head>
 <body>
 

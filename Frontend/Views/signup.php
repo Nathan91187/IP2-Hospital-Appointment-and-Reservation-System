@@ -1,5 +1,5 @@
 <?php
-include "db.php";
+include "../../Database/db.php";
 
 $error = "";
 $success = "";
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="signup.css">
+    <link rel="stylesheet" href="../CSS/signup.css">
 </head>
 <body>
 
