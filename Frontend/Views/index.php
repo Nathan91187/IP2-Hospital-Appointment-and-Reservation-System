@@ -36,7 +36,7 @@ $result = mysqli_query($conn, $query);
 
             <div class="search-box">
 
-                <input type="text" placeholder="Search Doctors ...">
+                <input type="text" placeholder="Search Doctors ....">
 
                 <select>
                     <option>Category</option>
