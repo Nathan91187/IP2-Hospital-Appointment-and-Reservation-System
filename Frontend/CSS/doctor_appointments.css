@@ -1,0 +1,70 @@
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f5f5f5;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    padding:30px 60px;
+    background:white;
+}
+
+.links a{
+    margin-left:20px;
+    text-decoration:none;
+    color:black;
+}
+
+.container{
+    padding:40px 60px;
+}
+
+.overview{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.appointments h2{
+    background:orange;
+    padding:15px;
+}
+
+.appointments p{
+    font-size:22px;
+}
+
+.bottom{
+    display:flex;
+    gap:50px;
+    margin-top:50px;
+}
+
+.calendar,
+.times{
+    flex:1;
+}
+
+.calendar-box{
+    background:white;
+    height:400px;
+    border-radius:20px;
+    padding:20px;
+}
+
+.time-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.time-grid button{
+    background:#f4b400;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    font-size:18px;
+}

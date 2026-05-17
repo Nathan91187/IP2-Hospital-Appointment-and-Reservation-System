@@ -1,0 +1,96 @@
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f5f5f5;
+}
+
+nav{
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    padding:25px 60px;
+}
+
+.links a{
+    text-decoration:none;
+    color:black;
+    margin-left:20px;
+}
+
+.container{
+    padding:40px 60px;
+}
+
+.main{
+    display:flex;
+    gap:30px;
+}
+
+.profile-card{
+    width:250px;
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.avatar{
+    width:160px;
+    height:160px;
+    background:orange;
+    border-radius:50%;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:50px;
+}
+
+.profile-card button{
+    margin-top:20px;
+    background:orange;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+}
+
+.form-card{
+    flex:1;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.row{
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+    padding:15px;
+    border:2px solid orange;
+    border-radius:10px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:20px;
+    margin-top:30px;
+}
+
+.cancel{
+    padding:12px 25px;
+}
+
+.save{
+    background:orange;
+    color:white;
+    border:none;
+    padding:12px 25px;
+}
