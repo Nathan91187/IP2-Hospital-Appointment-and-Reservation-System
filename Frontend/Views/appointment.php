@@ -1,12 +1,36 @@
 <?php
+
 include '../../Database/connect.php';
+
+if (!isset($_GET['id'])) {
+    die("Doctor ID missing");
+}
 
 $doctor_id = $_GET['id'];
 
-$query = "SELECT * FROM doctors WHERE doctor_id='$doctor_id'";
-$result = mysqli_query($conn, $query);
+$query = "
+SELECT
+    doctors.doctor_id,
+    doctors.specialization,
+    doctors.bio,
+    doctors.consultation_fee,
+    users.full_name
+FROM doctors
+JOIN users
+ON doctors.doctor_id = users.user_id
+WHERE doctors.doctor_id = ?
+";
 
-$doctor = mysqli_fetch_assoc($result);
+$stmt = $db->prepare($query);
+
+$stmt->execute([$doctor_id]);
+
+$doctor = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$doctor) {
+    die("Doctor not found");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +73,7 @@ $doctor = mysqli_fetch_assoc($result);
             </span>
 
             <p>
-                <?php echo $doctor['description']; ?>
+                <?php echo $doctor['bio']; ?>
             </p>
 
         </div>

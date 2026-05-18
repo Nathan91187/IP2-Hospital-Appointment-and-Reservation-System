@@ -1,115 +1,175 @@
 <?php
-include "../../Database/db.php";
+
+include "../../Database/connect.php";
 
 $error = "";
 $success = "";
 
-// TOTAL PATIENTS
-$patients = 0;
-$patientQuery = "SELECT COUNT(*) AS total FROM users";
-$result1 = $conn->query($patientQuery);
-
-if ($result1 && $row = $result1->fetch_assoc()) {
-    $patients = $row["total"];
-}
-
-// TOTAL DOCTORS
-$doctors = 4;
-
-// TOTAL APPOINTMENTS
-$appointments = 4;
 
 
-// CREATE DOCTOR
+$patientQuery = "
+SELECT COUNT(*) AS total
+FROM patients
+";
+
+$stmt = $db->prepare($patientQuery);
+
+$stmt->execute();
+
+$patients = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+
+
+$doctorQuery = "
+SELECT COUNT(*) AS total
+FROM doctors
+";
+
+$stmt = $db->prepare($doctorQuery);
+
+$stmt->execute();
+
+$doctors = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+
+
+$appointmentQuery = "
+SELECT COUNT(*) AS total
+FROM appointments
+";
+
+$stmt = $db->prepare($appointmentQuery);
+
+$stmt->execute();
+
+$appointments = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $first = trim($_POST["first_name"] ?? '');
-    $father = trim($_POST["father_name"] ?? '');
-    $grand = trim($_POST["grand_father_name"] ?? '');
-    $email = trim($_POST["email"] ?? '');
-    $password = $_POST["password"] ?? '';
-    $confirm = $_POST["confirm_password"] ?? '';
-    $specialization = trim($_POST["specialization"] ?? '');
+    $full_name = trim($_POST['full_name']);
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $confirm = $_POST['confirm_password'];
+    $specialization = trim($_POST['specialization']);
 
-    // EMPTY CHECK
+
+
     if (
-        empty($first) ||
-        empty($father) ||
-        empty($grand) ||
+        empty($full_name) ||
+        empty($username) ||
         empty($email) ||
         empty($password) ||
         empty($confirm) ||
         empty($specialization)
     ) {
-        $error = "⚠️ All fields are required!";
+
+        $error = "All fields are required";
+
     }
 
-    // NAME VALIDATION
-    else if (
-        !preg_match("/^[a-zA-Z ]+$/", $first) ||
-        !preg_match("/^[a-zA-Z ]+$/", $father) ||
-        !preg_match("/^[a-zA-Z ]+$/", $grand)
-    ) {
-        $error = "⚠️ Names must contain letters only!";
-    }
-
-    // EMAIL VALIDATION
     else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "⚠️ Invalid email format!";
+
+        $error = "Invalid email format";
+
     }
 
-    // PASSWORD LENGTH
     else if (strlen($password) < 6) {
-        $error = "⚠️ Password must be at least 6 characters!";
+
+        $error = "Password must be at least 6 characters";
+
     }
 
-    // PASSWORD CONFIRMATION
     else if ($password !== $confirm) {
-        $error = "⚠️ Passwords do not match!";
+
+        $error = "Passwords do not match";
+
     }
 
     else {
 
-        // CHECK IF EMAIL EXISTS
-        $check = "SELECT id FROM doctors WHERE email = ?";
-        $stmt = $conn->prepare($check);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $stmt->store_result();
 
-        if ($stmt->num_rows > 0) {
-            $error = "❌ Doctor email already exists!";
+        $check = "
+        SELECT *
+        FROM users
+        WHERE email = ?
+        ";
+
+        $stmt = $db->prepare($check);
+
+        $stmt->execute([$email]);
+
+        if ($stmt->rowCount() > 0) {
+
+            $error = "Email already exists";
+
         }
 
         else {
 
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-            $sql = "INSERT INTO doctors
-            (first_name, father_name, grand_father_name, email, password, specialization)
-            VALUES (?, ?, ?, ?, ?, ?)";
-
-            $stmt = $conn->prepare($sql);
-
-            $stmt->bind_param(
-                "ssssss",
-                $first,
-                $father,
-                $grand,
-                $email,
-                $hashedPassword,
-                $specialization
+            $hashedPassword = password_hash(
+                $password,
+                PASSWORD_DEFAULT
             );
 
-            if ($stmt->execute()) {
-                $success = "✅ Doctor created successfully!";
+            $insertUser = "
+            INSERT INTO users
+            (
+                username,
+                email,
+                password_hash,
+                full_name,
+                role
+            )
+            VALUES (?, ?, ?, ?, 'doctor')
+            ";
+
+            $stmt = $db->prepare($insertUser);
+
+            $stmt->execute([
+                $username,
+                $email,
+                $hashedPassword,
+                $full_name
+            ]);
+
+
+            $doctor_id = $db->lastInsertId();
+
+
+            $insertDoctor = "
+            INSERT INTO doctors
+            (
+                doctor_id,
+                specialization
+            )
+            VALUES (?, ?)
+            ";
+
+            $stmt = $db->prepare($insertDoctor);
+
+            $successInsert = $stmt->execute([
+                $doctor_id,
+                $specialization
+            ]);
+
+            if ($successInsert) {
+
+                $success = "Doctor created successfully";
+
                 $doctors++;
+
             } else {
-                $error = "❌ Failed to create doctor!";
+
+                $error = "Failed to create doctor";
             }
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -179,30 +239,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-row">
 
                     <div class="input-group">
-                        <label>First Name</label>
-                        <input type="text" name="first_name">
+                        <label>Full Name</label>
+                        <input type="text" name="full_name">
                     </div>
-
+                    
                     <div class="input-group">
-                        <label>Father Name</label>
-                        <input type="text" name="father_name">
-                    </div>
-
-                </div>
-
-                <div class="form-row">
-
-                    <div class="input-group">
-                        <label>Grand Father Name</label>
-                        <input type="text" name="grand_father_name">
+                        <label>Username</label>
+                        <input type="text" name="username">
                     </div>
 
                     <div class="input-group">
                         <label>Email</label>
                         <input type="email" name="email">
                     </div>
+                    
 
                 </div>
+
 
                 <div class="form-row">
 

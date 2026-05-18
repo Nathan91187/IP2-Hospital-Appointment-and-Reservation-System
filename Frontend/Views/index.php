@@ -1,14 +1,25 @@
 <?php
+
 include '../../Database/connect.php';
 
+$query = "
+SELECT
+    doctors.doctor_id,
+    users.full_name,
+    doctors.specialization,
+    doctors.bio
+FROM doctors
+JOIN users
+ON doctors.doctor_id = users.user_id
+WHERE users.role = 'doctor'
+";
 
-$query = "SELECT doctors.doctor_id, users.username, doctors.specialization
- FROM doctors
-JOIN users ON doctors.doctor_id = users.user_id;
- ";
 $stmt = $db->prepare($query);
+
 $stmt->execute();
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +79,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <section class="doctor-list">
 
-        <?php foreach ($result as $doctor) { ?>
+        <?php foreach ($doctors as $doctor) { ?>
 
         <div class="doctor-card">
 
@@ -81,7 +92,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div>
 
                     <h3>
-                        <?php echo $doctor['username']; ?>
+                        <?php echo $doctor['full_name']; ?>
                     </h3>
 
                     <span>

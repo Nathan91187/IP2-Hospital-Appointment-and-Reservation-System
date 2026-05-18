@@ -1,6 +1,6 @@
-DROP DATABASE hospital_system;
-CREATE DATABASE IF NOT EXISTS hospital_system;
-USE hospital_system;
+-- DROP DATABASE hospital_system;
+-- CREATE DATABASE IF NOT EXISTS hospital_system;
+-- USE hospital_system;
 
 
 CREATE TABLE IF NOT EXISTS users (
