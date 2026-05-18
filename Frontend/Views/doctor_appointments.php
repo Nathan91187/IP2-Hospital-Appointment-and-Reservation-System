@@ -1,3 +1,6 @@
+<?php
+include("../../Database/connect.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,9 +28,27 @@
         <div class="appointments">
             <h2>Upcoming Appointments Today</h2>
 
-            <p>9:00 AM: Sarah Jones (Heart Consultation)</p>
-            <p>10:30 AM: David Kim (Follow-up)</p>
-            <p>1:00 PM: [Reserved Slot]</p>
+            <?php
+            $date = date("Y-m-d");
+
+            $sql = "SELECT a.appointment_time, u.full_name, d.specialization
+                    FROM appointments a
+                    JOIN patients p ON a.patient_id = p.patient_id
+                    JOIN users u ON p.user_id = u.user_id
+                    JOIN doctors d ON a.doctor_id = d.doctor_id
+                    WHERE a.appointment_date = '$date'
+                    ORDER BY a.appointment_time";
+
+            $result = mysqli_query($conn, $sql);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<p>" . $row['appointment_time'] . ": " . $row['full_name'] . " (" . $row['specialization'] . ")</p>";
+                }
+            } else {
+                echo "<p>No appointments today</p>";
+            }
+            ?>
         </div>
     </div>
 

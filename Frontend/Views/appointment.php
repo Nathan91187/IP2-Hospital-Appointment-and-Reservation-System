@@ -1,55 +1,12 @@
 <?php
-include 'db.php';
-
+include '../../Database/connect.php';
 
 $doctor_id = $_GET['id'];
 
-$query = "SELECT * FROM doctors WHERE id='$doctor_id'";
+$query = "SELECT * FROM doctors WHERE doctor_id='$doctor_id'";
 $result = mysqli_query($conn, $query);
 
 $doctor = mysqli_fetch_assoc($result);
-
-
-if(isset($_POST['book'])) {
-
-    $patient_name = $_POST['patient_name'];
-    $appointment_date = $_POST['appointment_date'];
-    $appointment_time = $_POST['appointment_time'];
-
-    $insert_patient = "INSERT INTO patients(
-        full_name,
-        email,
-        password,
-        phone
-    )
-    VALUES(
-        '$patient_name',
-        'demo@gmail.com',
-        '123456',
-        '0911111111'
-    )";
-
-    mysqli_query($conn, $insert_patient);
-
-    $patient_id = mysqli_insert_id($conn);
-
-    $insert_appointment = "INSERT INTO appointments(
-        doctor_id,
-        patient_id,
-        appointment_date,
-        appointment_time
-    )
-    VALUES(
-        '$doctor_id',
-        '$patient_id',
-        '$appointment_date',
-        '$appointment_time'
-    )";
-
-    mysqli_query($conn, $insert_appointment);
-
-    echo "<script>alert('Appointment Booked Successfully');</script>";
-}
 ?>
 
 <!DOCTYPE html>
@@ -71,12 +28,9 @@ if(isset($_POST['book'])) {
 
 <div class="container appointment-container">
 
-
     <a class="back-link" href="index.php">
         < Back to doctors
     </a>
-
-
 
     <div class="profile-card">
 
@@ -102,10 +56,7 @@ if(isset($_POST['book'])) {
 
     </div>
 
-
-
     <div class="appointment-section">
-
 
         <div class="calendar-box">
 
@@ -177,37 +128,47 @@ if(isset($_POST['book'])) {
 
         </div>
 
+        <form action="../../Backend/api/appointment/book.php" method="POST">
 
+            <input type="hidden" name="doctor_id" value="<?php echo $doctor_id; ?>">
 
-        <div class="time-box">
+            <input type="number" name="patient_id" placeholder="Enter Patient ID" required>
 
-    <h3>Available Time</h3>
+            <input type="date" name="appointment_date" required>
 
-    <div class="time-grid">
+            <input type="time" name="appointment_time" required>
 
-        <button>1.00 am</button>
-        <button>1.30 am</button>
-        <button>2.00 am</button>
+            <div class="time-box">
 
-        <button>1.00 am</button>
-        <button class="selected">1.30 am</button>
-        <button>2.00 am</button>
+                <h3>Available Time</h3>
 
-        <button>1.00 am</button>
-        <button>1.30 am</button>
-        <button>2.00 am</button>
+                <div class="time-grid">
 
-        <button>1.00 am</button>
-        <button>1.30 am</button>
-        <button>2.00 am</button>
+                    <button type="button">1.00 am</button>
+                    <button type="button">1.30 am</button>
+                    <button type="button">2.00 am</button>
 
-    </div>
+                    <button type="button">1.00 am</button>
+                    <button type="button" class="selected">1.30 am</button>
+                    <button type="button">2.00 am</button>
 
-    <button class="book-btn">
-        Book Now
-    </button>
+                    <button type="button">1.00 am</button>
+                    <button type="button">1.30 am</button>
+                    <button type="button">2.00 am</button>
 
-</div>
+                    <button type="button">1.00 am</button>
+                    <button type="button">1.30 am</button>
+                    <button type="button">2.00 am</button>
+
+                </div>
+
+                <button type="submit" class="book-btn">
+                    Book Now
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 

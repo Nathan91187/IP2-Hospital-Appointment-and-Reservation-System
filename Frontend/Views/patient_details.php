@@ -12,48 +12,74 @@
 
     <h1>PATIENT DETAILS</h1>
 
-    <div class="content">
+    <form class="content"
+          action="../../Backend/api/patient/create.php"
+          method="POST">
+
+        <input type="number"
+               name="user_id"
+               placeholder="Enter User ID"
+               required>
 
         <!-- LEFT -->
         <div class="card">
+
             <h2>PATIENT-ENTERED PROFILE</h2>
 
             <label>Full Name:</label>
-            <input type="text" value="Sarah Jones">
+            <input type="text"
+                   name="full_name"
+                   value="Sarah Jones">
 
             <label>Age:</label>
-            <input type="text" value="34">
+            <input type="text"
+                   name="age"
+                   value="34">
 
             <label>Gender:</label>
-            <input type="text" value="Female">
+            <input type="text"
+                   name="gender"
+                   value="Female">
 
             <label>Reason for Visit:</label>
-            <input type="text" value="Chronic fatigue and persistent headaches">
+            <input type="text"
+                   name="reason_for_visit"
+                   value="Chronic fatigue and persistent headaches">
 
             <label>Preferred Contact:</label>
-            <input type="text" value="(123) 456-7890 | sarah.j@email.com">
+            <input type="text"
+                   name="preferred_contact"
+                   value="(123) 456-7890 | sarah.j@email.com">
+
         </div>
 
         <!-- RIGHT -->
         <div class="card">
+
             <h2>CLINICAL ASSESSMENT</h2>
 
             <label>Blood Type</label>
-            <input type="text">
+            <input type="text" name="blood_type">
 
             <label>Diagnosis / Clinical Impressions:</label>
-            <textarea placeholder="Enter notes..."></textarea>
+            <textarea name="diagnosis"
+                      placeholder="Enter notes..."></textarea>
 
             <label>Prescriptions</label>
-            <textarea placeholder="Add details..."></textarea>
+            <textarea name="prescriptions"
+                      placeholder="Add details..."></textarea>
 
             <label>Referrals</label>
-            <textarea placeholder="Specify referral..."></textarea>
+            <textarea name="referrals"
+                      placeholder="Specify referral..."></textarea>
 
-            <button>SAVE MEDICAL RECORD</button>
+            <button type="submit">
+                SAVE MEDICAL RECORD
+            </button>
+
         </div>
 
-    </div>
+    </form>
 
 </div>
 
