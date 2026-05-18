@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Schedule</title>
-    <link rel="stylesheet" href="../CSS/doctor_schedule.css">
+    <link rel="stylesheet" href="../CSS/doctor_appointments.css">
 </head>
 <body>
 
