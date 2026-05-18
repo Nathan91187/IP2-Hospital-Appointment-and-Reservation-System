@@ -1,16 +1,21 @@
 <?php
+
 try {
-    $dsn = "pgsql:host=ep-spring-cherry-aov76suf.c-2.ap-southeast-1.aws.neon.tech;
-            port=5432;
-            dbname=neondb;
-            sslmode=require;
-            options=endpoint=ep-spring-cherry-aov76suf";
-    $user = "neondb_owner";
-    $password = "npg_3uVZ8KwHmhdj";
-    $conn = new PDO($dsn, $user, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully!";
+
+    $host = "mysql-1a704d14-hospital-reservation.e.aivencloud.com";
+    $port = 25416;
+    $dbname = "defaultdb";
+    $user = "avnadmin";
+    $password = "AVNS_5s4RCfx0eUNHijuILMj";
+
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+
+    $db = new PDO($dsn, $user, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+
+
 } catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+
+    die("Connection failed: " . $e->getMessage());
 }
-?>

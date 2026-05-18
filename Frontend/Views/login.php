@@ -1,5 +1,5 @@
 <?php
-include "../../Database/db.php";
+include "../../Database/connect.php";
 
 $error = "";
 $success = "";
@@ -23,22 +23,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 3. CHECK USER
         $sql = "SELECT * FROM users WHERE email = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$email]);
+          $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-
-        if (!$user) {
+        if ($stmt->rowCount() == 0) {
             $error = "❌ No account found with this email!";
         } 
-        else if (!password_verify($password, $user["password"])) {
+        else if (!password_verify($password, $user["password_hash"])) {
             $error = "❌ Incorrect password!";
         } 
         else {
-            header("Location: admin_dashboard.php");
-            exit();
+    
+      $user_id = $user["user_id"];
+      $full_name = $user["full_name"];
+      $role = $user["role"];
+        $success = "✅ Logged in successfully!";
+                echo"
+            <script>
+                localStorage.setItem('user_id','$user_id');
+                localStorage.setItem('role','$role');
+                localStorage.setItem('full_name','$full_name');
+                setTimeout(()=>{
+                if('$role' == 'patient'){
+                    window.location.href = 'index.php';
+                }
+                },1000
+                );
+            </script>
+        ";
         }
     }
 }
@@ -53,13 +66,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-<div class="navbar">
+<!-- <div class="navbar">
     <h2>XYZ</h2>
     <div>
         <a href="#">Home</a>
         <a href="#">Contact Us</a>
     </div>
-</div>
+</div> -->
 
 <div class="container">
     <div class="login-box">

@@ -1,9 +1,14 @@
 <?php
-include 'db.php';
+include '../../Database/connect.php';
 
 
-$query = "SELECT * FROM doctors";
-$result = mysqli_query($conn, $query);
+$query = "SELECT doctors.doctor_id, users.username, doctors.specialization
+ FROM doctors
+JOIN users ON doctors.doctor_id = users.user_id;
+ ";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +18,7 @@ $result = mysqli_query($conn, $query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Portal</title>
 
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../CSS/index.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -63,7 +68,7 @@ $result = mysqli_query($conn, $query);
 
     <section class="doctor-list">
 
-        <?php while($doctor = mysqli_fetch_assoc($result)) { ?>
+        <?php foreach ($result as $doctor) { ?>
 
         <div class="doctor-card">
 
@@ -76,7 +81,7 @@ $result = mysqli_query($conn, $query);
                 <div>
 
                     <h3>
-                        <?php echo $doctor['full_name']; ?>
+                        <?php echo $doctor['username']; ?>
                     </h3>
 
                     <span>
@@ -87,7 +92,7 @@ $result = mysqli_query($conn, $query);
 
             </div>
 
-            <a href="appointment.php?id=<?php echo $doctor['id']; ?>">
+            <a href="appointment.php?id=<?php echo $doctor['doctor_id']; ?>">
 
                 <button>
                     View Profile >

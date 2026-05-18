@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XYZ Main Page</title>
 
-    <link rel="stylesheet" href="mainstyle.css">
+    <link rel="stylesheet" href="../CSS/mainstyle.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -13,16 +13,14 @@
 
 <div class="container">
 
-    <h1 class="page-title">
-        XYZ Main Page
-    </h1>
+
 
     <div class="main-box">
 
 
 
         <div class="hero-image">
-            <img src="hospital.jpg" alt="">
+            <img src="../Assets/Images/hero.png" alt="">
         </div>
 
 

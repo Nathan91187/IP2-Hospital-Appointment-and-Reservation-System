@@ -1,16 +1,19 @@
 <?php
-include "../../Database/db.php";
+include "../../Database/connect.php";
 
 $error = "";
 $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $first = trim($_POST["first_name"] ?? '');
-    $father = trim($_POST["father_name"] ?? '');
-    $grand = trim($_POST["grand_father_name"] ?? '');
+    $full_name = trim($_POST["full_name"] ?? '');
+    $username = trim($_POST["username"] ?? '');
+  
     $dob = trim($_POST["dob"] ?? '');
-    $address = trim($_POST["address"] ?? '');
+    $birth_date = new DateTime($dob);
+    $today = new DateTime();
+    $age = $today->diff($birth_date)->y;
+
     $phone = trim($_POST["phone"] ?? '');
     $gender = trim($_POST["gender"] ?? '');
     $email = trim($_POST["email"] ?? '');
@@ -18,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm = $_POST["confirm_password"] ?? '';
 
     if (
-        empty($first) || empty($father) || empty($grand) ||
-        empty($dob) || empty($address) || empty($phone) ||
+        empty($full_name) || empty($username)  ||
+        empty($dob) ||  empty($phone) ||
         empty($gender) || empty($email) || empty($password)
     ) {
         $error = "⚠️ All fields are required!";
@@ -35,44 +38,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     else if (strlen($password) < 6) {
         $error = "⚠️ Password must be at least 6 characters!";
-    }
+    }else if($age < 18){
+     $error = "⚠️  You must be at least 18 years old";
+    }   
 
     else {
-
-    // 🔍 CHECK IF EMAIL EXISTS FIRST
-    $check = "SELECT id FROM users WHERE email = ?";
-    $stmt = $conn->prepare($check);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
+    $check = "SELECT user_id FROM users WHERE email = ?";
+    $stmt = $db->prepare($check);
+    $stmt->execute([$email]);
+    $username_check = "SELECT username from users where username = ?";
+    $username_stmt = $db->prepare($username_check);
+    $username_stmt->execute([$username]);
+    if ($stmt->rowCount() > 0) {
         $error = "❌ Email already exists! Try another one.";
+    }else if($username_stmt->rowCount() > 0){
+              $error = "❌ Username already exists! Try another one.";
     } else {
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO users 
-        (first_name, father_name, grand_father_name, dob, address, phone, gender, email, password)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        (username, full_name, phone, email, password_hash,role)
+        VALUES (?, ?, ?, ?, ?, ?)";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param(
-            "sssssssss",
-            $first, $father, $grand,
-            $dob, $address, $phone,
-            $gender, $email, $hashedPassword
-        );
-
-        if ($stmt->execute()) {
-            $success = "✅ Account created successfully!";
-        } else {
-            $error = "❌ Something went wrong!";
-        
+        $stmt = $db->prepare($sql);
+$stmt->execute([
+            $username,
+            $full_name,
+            $phone,
+            $email,
+            $hashedPassword,
+            "patient"
+        ]);
+        $user_id = $db->lastInsertId();
+        $stmt = $db->prepare("INSERT INTO patients (patient_id, date_of_birth, gender) VALUES (?,?,?)");
+        $stmt->execute([$user_id,$dob,$gender]);
+        $success = "✅ Account created successfully!";
+        echo"
+            <script>
+                localStorage.setItem('user_id','$user_id');
+                localStorage.setItem('role','patient');
+                localStorage.setItem('full_name','$full_name');
+                setTimeout(()=>{
+                    window.location.href = 'index.php';
+                },1000
+                );
+            </script>
+        ";
     }
 }
     }
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -84,13 +100,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-<div class="navbar">
+<!-- <div class="navbar">
     <h2>XYZ</h2>
     <div>
         <a href="#">Home</a>
         <a href="#">Contact Us</a>
     </div>
-</div>
+</div> -->
 
 <div class="container">
     <div class="signup-box">
@@ -110,44 +126,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-row">
                 <div class="input-group">
-                    <label>First Name</label>
-                    <input type="text" name="first_name">
+                    <label>Full Name</label>
+                    <input type="text" name="full_name">
                 </div>
 
                 <div class="input-group">
-                    <label>Father Name</label>
-                    <input type="text" name="father_name">
+                    <label>Username</label>
+                    <input type="text" name="username">
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="input-group">
-                    <label>GrandFather Name</label>
-                    <input type="text" name="grand_father_name">
-                </div>
+     
 
                 <div class="input-group">
                     <label>Date of Birth</label>
-                    <input type="text" name="dob">
+                    <input type="date" name="dob">
                 </div>
-            </div>
-
-            <div class="form-row">
-                <div class="input-group">
-                    <label>Address</label>
-                    <input type="text" name="address">
-                </div>
-
-                <div class="input-group">
+                                <div class="input-group">
                     <label>Phone Number</label>
                     <input type="text" name="phone">
                 </div>
             </div>
 
+
+
             <div class="form-row">
                 <div class="input-group">
                     <label>Gender</label>
-                    <input type="text" name="gender">
+                    <select name="gender" id="">
+                        <option value="" default disabled>Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">female</option>
+                    </select>
+                
                 </div>
 
                 <div class="input-group">
